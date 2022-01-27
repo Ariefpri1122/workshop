@@ -41,10 +41,6 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-$app->register(
-    Rapide\LaravelQueueKafka\LumenQueueKafkaServiceProvider::class
-);
-
 /*
 |--------------------------------------------------------------------------
 | Return The Application
