@@ -31,32 +31,6 @@ class ClientController extends Controller
     }
     */
 
-    public function kafka()
-    {
-        $conf = new RdKafka\Conf();
-        $conf->set('metadata.broker.list', '10.55.56.102:9092');
-        $conf->set('transactional.id', 'some-id');
-        
-        $producer = new RdKafka\Producer($conf);
-        
-        $topic = $producer->newTopic("test");
-        
-        $producer->initTransactions(10000);
-        $producer->beginTransaction();
-        
-        for ($i = 0; $i < 10; $i++) {
-            $topic->produce(RD_KAFKA_PARTITION_UA, 0, "Message $i");
-            $producer->poll(0);
-        }
-        
-        //Any outstanding messages will be flushed (delivered) before actually committing the transaction.
-        $error = $producer->commitTransaction(10000);
-        
-        if (RD_KAFKA_RESP_ERR_NO_ERROR !== $error) {
-            //check what kind of error it was e.g. $error->isFatal(), etc. and act accordingly (retry, abort, etc.)
-        }
-    }
-
     public function di()
     {
         dd($this->titles);
